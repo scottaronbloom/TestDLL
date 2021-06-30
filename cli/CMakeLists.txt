@@ -26,8 +26,8 @@ include( include.cmake )
 include( ${CMAKE_SOURCE_DIR}/Project.cmake )
 
 include_directories( ${CMAKE_SOURCE_DIR}/MainLib )
-include_directories( ${CMAKE_SOURCE_DIR}/MainLib )
-include_directories( ${CMAKE_SOURCE_DIR}/StubbedSharedLib )
+include_directories( ${CMAKE_SOURCE_DIR}/StubbedSharedLibrary )
+include_directories( ${CMAKE_SOURCE_DIR}/ProperSharedLibrary )
 
 add_executable( TestDLL
                  ${project_SRCS} 
@@ -45,7 +45,7 @@ add_executable( TestDLL
           )
 set_target_properties( TestDLL PROPERTIES FOLDER Apps )
           
-target_link_libraries( TestDLL MainLib StubbedSharedLib )
+target_link_libraries( TestDLL MainLib ProperSharedLibrary StubbedSharedLibrary dbghelp )
 DeploySystem( TestDLL . )
 
 INSTALL( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION . )

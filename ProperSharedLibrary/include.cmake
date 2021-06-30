@@ -1,13 +1,12 @@
 set(qtproject_SRCS
-    Stubs.cpp
-    SharedLibrary.cpp
+    ProperSharedLibrary.cpp
 )
 
 set(qtproject_H
 )
 
 set(project_H
-    SharedLibrary.h
+    ProperSharedLibrary.h
 )
 
 set(qtproject_UIS

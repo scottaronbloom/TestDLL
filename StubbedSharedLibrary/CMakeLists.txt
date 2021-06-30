@@ -24,14 +24,14 @@ cmake_minimum_required(VERSION 3.1)
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
-project( StubbedSharedLib )
+project( StubbedSharedLibrary )
 
 include( include.cmake )
 include( ${CMAKE_SOURCE_DIR}/Project.cmake )
-add_compile_definitions( SHARED_LIBRARY_INTERNAL )
+add_compile_definitions( STUBBED_SHARED_LIBRARY_INTERNAL )
 include_directories( ${CMAKE_SOURCE_DIR}/MainLib )
 
-add_library(StubbedSharedLib SHARED
+add_library(StubbedSharedLibrary SHARED
     ${project_SRCS} 
     ${project_H}  
     ${qtproject_SRCS} 
@@ -44,4 +44,4 @@ add_library(StubbedSharedLib SHARED
     ${qtproject_QRC_SOURCES}
     ${_CMAKE_FILES}
 )
-set_target_properties( StubbedSharedLib PROPERTIES FOLDER Libs )
+set_target_properties( StubbedSharedLibrary PROPERTIES FOLDER Libs )

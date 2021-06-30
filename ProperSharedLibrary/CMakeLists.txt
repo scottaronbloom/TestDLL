@@ -24,31 +24,25 @@ cmake_minimum_required(VERSION 3.1)
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
+project( ProperSharedLibrary )
 
-project(TestDLL-Top) 
+include( include.cmake )
+include( ${CMAKE_SOURCE_DIR}/Project.cmake )
+add_compile_definitions( PROPER_SHARED_LIBRARY_INTERNAL )
+include_directories( ${CMAKE_SOURCE_DIR}/MainLib )
 
-SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/SABUtils/Modules ${CMAKE_MODULE_PATH})
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED true)
-find_package(Threads)
-find_package(Qt5 COMPONENTS Core Xml REQUIRED)
-find_package(Deploy REQUIRED)
-set_property( GLOBAL PROPERTY USE_FOLDERS ON )
-
-SET( CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/Install )
-
-add_subdirectory( StubbedSharedLibrary )
-add_subdirectory( ProperSharedLibrary )
-add_subdirectory( MainLib )
-add_subdirectory( cli )
-
-SET( CPACK_PACKAGE_VENDOR "Scott Aron Bloom" )
-SET( CPACK_PACKAGE_VERSION_MAJOR "0" )
-SET( CPACK_PACKAGE_VERSION_MINOR "1" )
-SET( CPACK_PACKAGE_VERSION_PATCH "0" )
-set( CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
-
-set( CPACK_NSIS_MODIFY_PATH OFF)
-SET( CPACK_GENERATOR NSIS ZIP )
-include( CPack )
+add_library(ProperSharedLibrary SHARED
+    ${project_SRCS} 
+    ${project_H}  
+    ${qtproject_SRCS} 
+    ${qtproject_QRC} 
+    ${qtproject_QRC_SRCS} 
+    ${qtproject_UIS_H} 
+    ${qtproject_MOC_SRCS} 
+    ${qtproject_H} 
+    ${qtproject_UIS}
+    ${qtproject_QRC_SOURCES}
+    ${_CMAKE_FILES}
+)
+target_link_libraries( ProperSharedLibrary MainLib )
+set_target_properties( ProperSharedLibrary PROPERTIES FOLDER Libs )
