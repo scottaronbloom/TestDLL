@@ -13,7 +13,7 @@ public:
     CSharedLibraryWrapperWin( const std::string & dllName ) :
         CSharedLibraryWrapper< T >( dllName )
     {
-        std::string dir = "C:\\Visual Studio\\Projects\\github\\scottaronbloom\\TestDLL\\build\\" + fDllName + "\\Debug";
+        auto dir = "C:\\Visual Studio\\Projects\\github\\scottaronbloom\\TestDLL\\build\\" + fDllName + "\\Debug";
         AddDllDirectory( std::wstring( dir.begin(), dir.end() ).c_str() );
         fModule = LoadLibrary( fDllNameWExt.c_str() );
         if( !fModule )

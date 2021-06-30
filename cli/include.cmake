@@ -1,8 +1,6 @@
 set(qtproject_SRCS
     main.cpp    
     wrapper.cpp
-    wrapper_win.cpp
-    wrapper_linux.cpp
 )
 
 set(qtproject_H
@@ -10,9 +8,15 @@ set(qtproject_H
 
 set(project_H
     wrapper.h
-    wrapper_win.h
-    wrapper_linux.h
 )
+
+IF( WIN32 )
+    set(qtproject_SRCS ${qtproject_SRCS} wrapper_win.cpp)
+    set(project_H ${project_H} wrapper_win.h)
+ELSE()
+    set(qtproject_SRCS ${qtproject_SRCS} wrapper_linux.cpp)
+    set(project_H ${project_H} wrapper_linux.h)
+ENDIF()
 
 set(qtproject_UIS
 )

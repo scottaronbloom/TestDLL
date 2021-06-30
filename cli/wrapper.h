@@ -7,8 +7,10 @@ std::string getLastError( const std::string & funcName );
 
 #ifdef _WIN32
 #include <Windows.h>
-#define FUNC_PTR FARPROC
 #define LIB_PTR HMODULE
+#define FUNC_PTR FARPROC
+#else
+#define LIB_PTR void *
 #endif
 
 template< typename T >
@@ -21,7 +23,11 @@ public:
 
     CSharedLibraryWrapper( const std::string & dllName ) :
         fDllName( dllName ),
+#ifdef _WIN32
         fDllNameWExt( dllName + ".dll" ),
+#else
+        fDllNameWExt( dllName + ".so" ),
+#endif
         fClassName( "C" + dllName )
     {
     }
