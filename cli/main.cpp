@@ -2,10 +2,11 @@
 
 #ifdef _WIN32
 #include "wrapper_win.h"
-using CSharedLibraryWrapperWin = _CSharedLibraryWrapper
+template< typename T >
+using CSharedLibraryWrapperWin = _CSharedLibraryWrapper;
 #else
 #include "wrapper_linux.h"
-using CSharedLibraryWrapperLinux = _CSharedLibraryWrapper
+using CSharedLibraryWrapperLinux = _CSharedLibraryWrapper;
 #endif
 
 #include "StubbedSharedLibrary.h"
