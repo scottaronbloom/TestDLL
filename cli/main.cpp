@@ -1,5 +1,12 @@
 #include "Library.h"
-#include "Wrapper_win.h"
+
+#ifdef _WIN32
+#include "wrapper_win.h"
+using CSharedLibraryWrapperWin = _CSharedLibraryWrapper
+#else
+#include "wrapper_linux.h"
+using CSharedLibraryWrapperLinux = _CSharedLibraryWrapper
+#endif
 
 #include "StubbedSharedLibrary.h"
 #include "ProperSharedLibrary.h"
@@ -7,13 +14,7 @@
 class CStubbedSharedLibrary;
 class CProperSharedLibrary;
 
-//#include <sstream>
 #include <iostream>
-
-//#include <libloaderapi.h>
-//#include <errhandlingapi.h>
-//#include <direct.h>
-//#include <Windows.h>
 
 int main( int argc, char ** argv )
 {
@@ -31,8 +32,8 @@ int main( int argc, char ** argv )
 
     for( int ii = 0; ii < argc; ++ii )
     {
-        auto stubbedLibWrapper = std::make_shared< CSharedLibraryWrapperWin< CStubbedSharedLibrary > >( "StubbedSharedLibrary" );
-        auto properLibWrapper = std::make_shared< CSharedLibraryWrapperWin< CProperSharedLibrary > >( "ProperSharedLibrary" );
+        auto stubbedLibWrapper = std::make_shared< _CSharedLibraryWrapper< CStubbedSharedLibrary > >( "StubbedSharedLibrary" );
+        auto properLibWrapper = std::make_shared< _CSharedLibraryWrapper< CProperSharedLibrary > >( "ProperSharedLibrary" );
 
         if( ii == 0 )
         {

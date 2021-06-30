@@ -1,5 +1,5 @@
-#ifndef __WRAPPER_WIN_H
-#define __WRAPPER_WIN_H
+#ifndef __WRAPPER_LINUX_H
+#define __WRAPPER_LINUX_H
 
 #include "wrapper.h"
 #include <string>
@@ -7,10 +7,10 @@
 #include <dbghelp.h>
 
 template< typename T >
-class CSharedLibraryWrapperWin : public CSharedLibraryWrapper< T >
+class CSharedLibraryWrapperLinux : public CSharedLibraryWrapper< T >
 {
 public:
-    CSharedLibraryWrapperWin( const std::string & dllName ) :
+    CSharedLibraryWrapperLinux( const std::string & dllName ) :
         CSharedLibraryWrapper< T >( dllName )
     {
         std::string dir = "C:\\Visual Studio\\Projects\\github\\scottaronbloom\\TestDLL\\build\\" + fDllName + "\\Debug";
@@ -36,7 +36,7 @@ public:
         fGetStringAddress = (GETSTRING_PROC)resolve( "getString", "?getString@@YAXPEAV" + fClassName + "@@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z" );
     }
 
-    virtual ~CSharedLibraryWrapperWin()
+    virtual ~CSharedLibraryWrapperLinux()
     {
         destroy();
         UnloadLib();
