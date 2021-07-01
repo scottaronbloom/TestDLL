@@ -31,8 +31,10 @@ private:
     std::string fString;
 };
 
-PROPER_SHARED_LIBRARY_DECLSPEC void create( const std::string & string, CProperSharedLibrary *& retVal );
-PROPER_SHARED_LIBRARY_DECLSPEC void getString( CProperSharedLibrary * lib, std::string & retVal );
-PROPER_SHARED_LIBRARY_DECLSPEC void destroy( CProperSharedLibrary * lib );
+#ifdef PROPER_SHARED_LIBRARY_INTERNAL
+extern "C" PROPER_SHARED_LIBRARY_DECLSPEC void create( const std::string & string, CProperSharedLibrary *& retVal );
+extern "C" PROPER_SHARED_LIBRARY_DECLSPEC void getString( CProperSharedLibrary * lib, std::string & retVal );
+extern "C" PROPER_SHARED_LIBRARY_DECLSPEC void destroy( CProperSharedLibrary * lib );
+#endif
 #endif
 

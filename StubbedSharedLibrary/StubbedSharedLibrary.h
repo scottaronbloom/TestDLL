@@ -31,9 +31,11 @@ private:
     std::string fString;
 };
 
-STUBBED_SHARED_LIBRARY_DECLSPEC void create( const std::string & string, CStubbedSharedLibrary *& retVal );
-STUBBED_SHARED_LIBRARY_DECLSPEC void getString( CStubbedSharedLibrary * lib, std::string & retVal );
-STUBBED_SHARED_LIBRARY_DECLSPEC void destroy( CStubbedSharedLibrary * lib );
+#ifdef STUBBED_SHARED_LIBRARY_INTERNAL
+extern "C" STUBBED_SHARED_LIBRARY_DECLSPEC void create( const std::string & string, CStubbedSharedLibrary *& retVal );
+extern "C" STUBBED_SHARED_LIBRARY_DECLSPEC void getString( CStubbedSharedLibrary * lib, std::string & retVal );
+extern "C" STUBBED_SHARED_LIBRARY_DECLSPEC void destroy( CStubbedSharedLibrary * lib );
+#endif
 
 #endif
 

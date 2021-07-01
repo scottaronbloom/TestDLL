@@ -50,6 +50,9 @@ public:
     FUNC_PTR resolve( const std::string & funcName, const std::string & mangledName ) override
     {
         auto address = mangledName.empty() ? GetProcAddress( fModule, funcName.c_str() ) : GetProcAddress( fModule, mangledName.c_str() );
+        if( !address && !mangledName.empty() )
+            address = GetProcAddress( fModule, funcName.c_str() );
+
         if( !address )
         {
             auto dispName = funcName;

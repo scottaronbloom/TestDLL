@@ -8,13 +8,14 @@
 #define _CSharedLibraryWrapper CSharedLibraryWrapperLinux
 #endif
 
-#include "StubbedSharedLibrary.h"
-#include "ProperSharedLibrary.h"
+//##include "StubbedSharedLibrary.h"
+//##include "ProperSharedLibrary.h"
 
 class CStubbedSharedLibrary;
 class CProperSharedLibrary;
 
 #include <iostream>
+#include <memory>
 
 int main( int argc, char ** argv )
 {
@@ -46,17 +47,17 @@ int main( int argc, char ** argv )
 
         std::cout << "Original String: '" << argv[ ii ] << "\n";
 
-        auto dynLoadedStubbed = stubbedLibWrapper->create( argv[ ii ] );
+        stubbedLibWrapper->create( argv[ ii ] );
         std::cout << "    Dynamically Loaded Stubbed Library Results: '" << stubbedLibWrapper->string() << "'\n";
 
-        auto dynLoadedProper = properLibWrapper->create( argv[ ii ] );
+        properLibWrapper->create( argv[ ii ] );
         std::cout << "    Dynamically Loaded Proper Library Results: '" << properLibWrapper->string() << "'\n";
 
-        auto stubbedLibStatic = new CStubbedSharedLibrary( argv[ ii ] );
-        std::cout << "    Statically bound Stubbed Library Results: '" << stubbedLibStatic->string() << "'\n";
+        //auto stubbedLibStaticBound = new CStubbedSharedLibrary( argv[ ii ] );
+        //std::cout << "    Statically bound Stubbed Library Results: '" << stubbedLibStaticBound->string() << "'\n";
 
-        auto properLibStatic = new CProperSharedLibrary( argv[ ii ] );
-        std::cout << "    Statically bound Proper Library Results: '" << properLibStatic->string() << "'\n";
+        //auto properLibStaticBound = new CProperSharedLibrary( argv[ ii ] );
+        //std::cout << "    Statically bound Proper Library Results: '" << properLibStaticBound->string() << "'\n";
     }
 
 }

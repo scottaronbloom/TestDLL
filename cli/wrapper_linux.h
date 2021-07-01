@@ -3,8 +3,8 @@
 
 #include "wrapper.h"
 #include <string>
-
-#include <dbghelp.h>
+#include <dlfcn.h>
+#include <iostream>
 
 template< typename T >
 class CSharedLibraryWrapperLinux : public CSharedLibraryWrapper< T >
@@ -13,41 +13,51 @@ public:
     CSharedLibraryWrapperLinux( const std::string & dllName ) :
         CSharedLibraryWrapper< T >( dllName )
     {
-        auto dir = "~/sb/github/TestDll/build/" + fDllName + "//Debug";
+        this->fDllName = "lib" + dllName;
+        this->fDllNameWExt = this->fDllName + ".so";
 
         int dlFlags = 0;
         dlFlags |= RTLD_NOW;
         dlFlags |= RTLD_GLOBAL;
       
-        fPath = dir + "//" + fDllNameWExt;
-        fModule = dlopen( fPath.c_str(), dlFlags);
-        if( !fModule )
+        auto dir = "/home/sbloom/sb/github/scottaronbloom/TestDLL/build/" + dllName;
+        this->fPath = dir + "/" + this->fDllNameWExt;
+        this->fModule = dlopen( this->fPath.c_str(), dlFlags);
+        if( !this->fModule )
         {
-            std::cerr << "could not find " << fDllNameWExt << " in path" << std::endl;
-            std::cerr << getLastError( "LoadLibrary(" + fDllNameWExt + ")" ) << std::endl;
+            std::cerr << "could not find " << this->fDllNameWExt << " in path" << std::endl;
+            std::cerr << getLastError( "LoadLibrary(" + this->fDllNameWExt + ")" ) << std::endl;
             return;
         }
 
-        fCreateAddress = (CREATE_PROC)resolve( "create", QString() );
-        fDestroyAddress = (DESTROY_PROC)resolve( "destroy", QString() );
-        fGetStringAddress = (GETSTRING_PROC)resolve( "getString", QString() );
+        //using CREATE_PROC=CSharedLibraryWrapper< T >::CREATE_PROC;
+        using CREATE_PROC=typename CSharedLibraryWrapper< T >::CREATE_PROC;
+        using DESTROY_PROC=typename CSharedLibraryWrapper< T >::DESTROY_PROC;
+        using GETSTRING_PROC=typename CSharedLibraryWrapper< T >::GETSTRING_PROC;
+
+        this->fCreateAddress = (CREATE_PROC)resolve( "create", std::string() );
+        this->fDestroyAddress = (DESTROY_PROC)resolve( "destroy", std::string() );
+        this->fGetStringAddress = (GETSTRING_PROC)resolve( "getString", std::string() );
     }
 
     virtual ~CSharedLibraryWrapperLinux()
     {
-        destroy();
-        UnloadLib();
+        this->destroy();
+        this->UnloadLib();
     }
 
     virtual void UnloadLib() override
     {
-        dlclose( fModule );
+        if ( this->fModule )
+            dlclose( this->fModule );
     }
 
     FUNC_PTR resolve( const std::string & funcName, const std::string & mangledName ) override
     {
-        auto address = mangledName.empty() ? dlsym( fModule, funcName.c_str() ) : dlsym( fModule, mangledName.c_str() );
-        if( !address )
+        auto address = mangledName.empty() ? dlsym( this->fModule, funcName.c_str() ) : dlsym( this->fModule, mangledName.c_str() );
+        if( !address && !mangledName.empty() )
+            address = dlsym( this->fModule, funcName.c_str() );
+        if ( !address )
         {
             auto dispName = funcName;
             std::cerr << "could not find create proc address for function '" << dispName << "'" << std::endl;

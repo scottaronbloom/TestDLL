@@ -44,8 +44,14 @@ add_executable( TestDLL
                  ${_CMAKE_MODULE_FILES}
           )
 set_target_properties( TestDLL PROPERTIES FOLDER Apps )
-          
-target_link_libraries( TestDLL MainLib ProperSharedLibrary StubbedSharedLibrary dbghelp )
+
+if( WIN32 )
+    SET( DebugLibs dbghelp )
+else()
+    SET( DLL_LIB dl )
+endif()
+target_link_libraries( TestDLL MainLib ${DebugLibs} ${DLL_LIB})
+
 DeploySystem( TestDLL . )
 
 INSTALL( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION . )
